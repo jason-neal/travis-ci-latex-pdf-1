@@ -40,23 +40,17 @@ tlmgr install collection-langeuropean
 tlmgr install   \
   exam          \
   amsmath       \
-  amsthm        \
-  amssymb       \
+  amscls        \
   mathtools     \
-  enumerate     \
   thmtools      \
   stmaryrd      \
   xcolor        \
   pdfpages      \
-  centernot     \
   pgf           \
   cancel        \
   hyperref      \
-  bookmark      \
   pgfplots      \
-  bm            \
   listings      \
-  graphicx      \
   scalerel      \
   stackengine   \
   etoolbox      \
@@ -87,14 +81,15 @@ tlmgr install   \
   collection-fontsrecommended \
   minted        \
   pgfgantt      \
-  pdflscape     \
   geometry      \
-  longtable     \
   beamer        \
   translator    \
   environ       \
   trimspaces    \
-  imakeidx
+  imakeidx      \
+  graphics      \
+  tools         \
+  oberdiek
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
