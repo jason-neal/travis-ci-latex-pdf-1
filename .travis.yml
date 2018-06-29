@@ -2,7 +2,7 @@
 before_install:
  - sudo apt-get install python-pygments
 install:
- - source ./texlive_install.sh
+ - source ./2-texlive-pdflatex/texlive_install.sh
 cache:
   directories:
     - /tmp/texlive
