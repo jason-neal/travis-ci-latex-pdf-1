@@ -89,7 +89,35 @@ tlmgr install   \
   imakeidx      \
   graphics      \
   tools         \
-  oberdiek
+  oberdiek      \
+  sttools       \
+  lipsum        \
+  siunitx       \
+  mhchem        \
+  wasysym       \
+  microtype     \
+  footmisc      \
+  placeins      \
+  xkeyval       \
+  threeparttable \
+  threeparttablex \
+  datatool      \
+  soul          \
+  epigraph      \
+  xargs         \
+  natbib        \
+  beebe         \
+  authordate    \
+  fncychap      \
+  fixme         \
+  todonotes     \
+  l3kernel      \
+  l3packages    \
+  sttools       \
+  setspace      \
+  xfor          \
+  substr        \
+  fp            \
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
