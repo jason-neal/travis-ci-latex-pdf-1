@@ -15,8 +15,12 @@ if ! command -v texlua > /dev/null; then
   tar -xzf install-tl-unx.tar.gz
   cd install-tl-20*
 
+  # Find directory this file is in, to find the texlive.profile file.
+  BASEDIR=$(dirname "$BASH_SOURCE")
+  echo "$BASEDIR"
+
   # Install a minimal system
-  ./install-tl --profile=../texlive/texlive.profile
+  ./install-tl --profile=${BASEDIR}/texlive.profile
 
   cd ..
 fi
@@ -36,65 +40,10 @@ tlmgr install collection-langeuropean
 
 # Index of packages: http://ctan.mirrors.hoobly.com/systems/texlive/tlnet/archive/
 # Other contrib packages: done as a block to avoid multiple calls to tlmgr
-# pgf includes tikz
-tlmgr install   \
-  exam          \
-  amsmath       \
-  amsthm        \
-  amssymb       \
-  mathtools     \
-  enumerate     \
-  thmtools      \
-  stmaryrd      \
-  xcolor        \
-  pdfpages      \
-  centernot     \
-  pgf           \
-  cancel        \
-  hyperref      \
-  bookmark      \
-  pgfplots      \
-  bm            \
-  listings      \
-  graphicx      \
-  scalerel      \
-  stackengine   \
-  etoolbox      \
-  listofitems   \
-  marvosym      \
-  amsfonts      \
-  opensans      \
-  slantsc       \
-  fancyhdr      \
-  ulem          \
-  algorithms    \
-  algorithmicx  \
-  float         \
-  booktabs      \
-  enumitem      \
-  polynom       \
-  fancyvrb      \
-  makecmds      \
-  multirow      \
-  chngcntr      \
-  fvextra       \
-  upquote       \
-  lineno        \
-  ifplatform    \
-  xstring       \
-  framed        \
-  caption       \
-  collection-fontsrecommended \
-  minted        \
-  pgfgantt      \
-  pdflscape     \
-  geometry      \
-  longtable     \
-  beamer        \
-  translator    \
-  environ       \
-  trimspaces    \
-  imakeidx
+# One package per line in texive_packages
+# We need to change the working directory before including a file
+cd "$(dirname "${BASH_SOURCE[0]}")"
+tlmgr install $(cat texlive_packages)
 
 # Keep no backups (not required, simply makes cache bigger)
 tlmgr option -- autobackup 0
