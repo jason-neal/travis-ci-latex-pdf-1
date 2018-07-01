@@ -16,6 +16,7 @@ This method does not use the pdflatex engine to compile, but [Tectonic](https://
 #### Pro:
 * automatically loops TeX and BibTeX as needed, and only as much as needed
 * automatically downloads LaTeX packages which are needed
+* can generate an index
 * fast, because tectonic and packages are cached
 
 #### Con:
@@ -63,7 +64,7 @@ Want this? Instructions [below](#tinytex).
 
 * Install the Travis GitHub App by going to the [Marketplace](https://github.com/marketplace/travis-ci), scroll down, select Open Source (also when you want to use private repos) and select 'Install it for free', then 'Complete order and begin installation'. 
 * Now you should be in Personal settings | Applications | Travis CI | Configure and you can allow access to repositories, either select repos or all repos.
-* Copy `.travis.yml` and specify the right tex file in the `script` section in `.travis.yml`. Also remove the `makeindex` line and the extra `tectonic` call if not using an index.
+* Copy `1-tectonic/.travis.yml` and specify the right tex file in the `script` section in `.travis.yml`. Also remove the `makeindex` line and the extra `tectonic` call if not using an index.
 * Commit and push, you can view your repositories at [travis-ci.com](https://travis-ci.com/).
 * For deploying to GitHub releases, see the notes [below](#deploy).
 
@@ -93,10 +94,12 @@ This repo contains:
 
 * * Install the Travis GitHub App by going to the [Marketplace](https://github.com/marketplace/travis-ci), scroll down, select Open Source (also when you want to use private repos) and select 'Install it for free', then 'Complete order and begin installation'. 
   * Now you should be in Personal settings | Applications | Travis CI | Configure and you can allow access to repositories, either select repos or all repos.
-* Copy the files in the folder `2-texlive-pdflatex` to your repo, so `.travis.yml`, `texlive_install.sh` and `texlive/texlive.profile`.
+* Copy the files in the folder `2-texlive-pdflatex` to your repo, so `.travis.yml`, `texlive_install.sh`, `texlive_packages` and `texlive/texlive.profile`.
 * Specify the right tex file in the `.travis.yml`. Possibly you also need to change the folder in `before_script` if not using `src/`.
 * Commit and push, you can view your repositories at [travis-ci.com](https://travis-ci.com/).
-* Tip from [gvacaliuc](https://github.com/gvacaliuc/travis-ci-latex-pdf): In order to maintain the install scripts in a central repo and link to them, you could also just use `.travis.yml` and replace
+* If you need additional packages, you can add them to the `texlive_packages` file. An index of existing packages is for example at http://ctan.mirrors.hoobly.com/systems/texlive/tlnet/archive/
+(Thanks to [@jason-neal](https://github.com/PHPirates/travis-ci-latex-pdf/pull/6) for improving this)
+* Tip from [gvacaliuc](https://github.com/gvacaliuc/travis-ci-latex-pdf): In order to maintain the install scripts in a central repo and link to them, you could also just copy `.travis.yml` and replace
 ```yaml
 install:
  - source ./texlive_install.sh
@@ -105,11 +108,14 @@ with
 ```yaml
 install:
   - mkdir ../texlive/
-  - curl https://raw.githubusercontent.com/PHPirates/travis-ci-latex-pdf/master/texlive/texlive.profile > ../texlive/texlive.profile
+  - curl https://raw.githubusercontent.com/PHPirates/travis-ci-latex-pdf/master/2-texlive-pdflatex/texlive/texlive.profile > ../texlive/texlive.profile
+  - curl https://raw.githubusercontent.com/PHPirates/travis-ci-latex-pdf/master/2-texlive-pdflatex/texlive_packages > ./texlive_packages
   - curl https://raw.githubusercontent.com/PHPirates/travis-ci-latex-pdf/master/texlive_install.sh > ./texlive_install.sh
   - source ./texlive_install.sh
 ```
-* Optional: you could fork this repo so you can maintain your own build files with the right packages.
+* Preferably you fork this repo so you can maintain your own build files with the right packages.
+
+Note that sometimes `tlmgr` selects a broken mirror to download TeX Live from, so you get an error like `Output was gpg: verify signatures failed: eof`. Restarting the build will probably fix this, it will auto-select a different mirror. (Thanks to [@jason-neal](https://github.com/jason-neal/travis-ci-latex-pdf-texlive/commit/d48a5f92d2394f27371dd32c94a16415de499058) for testing this.)
 
 ## <a name="tinytex">Instructions for building with TeX Live and pdflatex via tinytex with R</a>
 
@@ -162,7 +168,7 @@ reStructuredText:
 ##### References for original setup with pdflatex and TeX Live
 I also put some of these instructions on the [TeX Stackexchange](https://tex.stackexchange.com/questions/398830/how-to-build-my-latex-automatically-with-pdflatex-using-travis-ci/398831#398831).
 
-In the end the install script was completely rewritten based on the [LaTeX3 build file](https://github.com/latex3/latex3/blob/master/support/texlive.sh).
+In the end the install script from the original repo was completely rewritten based on the [LaTeX3 build file](https://github.com/latex3/latex3/blob/master/support/texlive.sh).
 
 Some original thoughts from [harshjv's blog](https://harshjv.github.io/blog/setup-latex-pdf-build-using-travis-ci/), and thanks to [jackolney](https://github.com/jackolney/travis-ci-latex-pdf) for all his attempts to put it into practice.
 Also see harshjv's original [blog post](https://harshjv.github.io/blog/document-building-versioning-with-tex-document-git-continuous-integration-dropbox/).
